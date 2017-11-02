@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private ProgressBar progressBar;
     private TextView badResponse;
     private static int NEWS_LOADER_ID = 1;
-    private String GUARDIAN_API = "http://content.guardianapis.com/search?order-by=newest&q=youtube&api-key=test";
+    private String GUARDIAN_API = "http://content.guardianapis.com/search?order-by=newest&q=youtube&show-tags=contributor&api-key=test";
     android.app.LoaderManager loaderManager;
 
     @Override

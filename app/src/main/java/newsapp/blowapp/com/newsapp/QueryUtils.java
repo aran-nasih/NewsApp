@@ -93,13 +93,30 @@ public class QueryUtils {
             JSONArray newsResults = response.getJSONArray("results");
             for (int i = 0; i < newsResults.length(); i++) {
                 String title = "title not available";
-                String author = "by unknown";
                 String date = "unknown date";
                 String category = "no category";
                 String link = "";
 
                 JSONObject currentItem;
                 currentItem = newsResults.getJSONObject(i);
+                ArrayList<String> authors = new ArrayList<>();
+
+                JSONArray tags = null;
+                if (currentItem.has("tags"))
+                    tags = currentItem.getJSONArray("tags");
+
+                if (tags != null && tags.length() > 0) {
+                    for (int j = 0; j < tags.length(); j++) {
+                        JSONObject currentTag = tags.getJSONObject(j);
+                        String author = currentTag.optString("webTitle");
+                        if (author != null) {
+                            authors.add(author);
+                        }
+                    }
+                } else {
+                    authors.add("by unknown");
+                }
+
 
                 if (currentItem.has("webTitle"))
                     title = currentItem.optString("webTitle");
@@ -109,10 +126,8 @@ public class QueryUtils {
                     date = currentItem.optString("webPublicationDate");
                 if (currentItem.has("webUrl"))
                     link = currentItem.optString("webUrl");
-                if (currentItem.has("author"))
-                    author = currentItem.optString("author");
 
-                News book = new News(title, date, category, author, link);
+                News book = new News(title, date, category, authors.get(0), link);
                 books.add(book);
             }
         } catch (JSONException e) {
